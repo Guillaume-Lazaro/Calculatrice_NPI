@@ -15,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button[] buttons;
     private TextView[] stackView;
-    private Stack<Integer> stack;
+    private Stack<Float> stack;
+    private TextView textViewInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Récupération des éléments de l'interface et des boutons:
         GridLayout gridLayoutNumbers = (GridLayout) findViewById(R.id.gl_buttons);
-        final TextView textViewInput = (TextView) findViewById(R.id.tv_input);
+        //final TextView textViewInput = (TextView) findViewById(R.id.tv_input);
+        textViewInput = (TextView) findViewById(R.id.tv_input);
+
 
         final Button buttonMult = (Button) findViewById(R.id.button_mult);
         final Button buttonAdd = (Button) findViewById(R.id.button_add);
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         this.buttons[9].setText("0");
 
         //Initialisation de la pile:
-        this.stack = new Stack<Integer>();
+        this.stack = new Stack<>();
 
         //Assignation des listeners aux boutons des numéros:
         for(int i=0 ; i<10 ; i++) {
@@ -76,26 +79,77 @@ public class MainActivity extends AppCompatActivity {
         buttonEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(textViewInput.getText()!="") {
-                    String numberEntered = "" + textViewInput.getText();
-                    textViewInput.setText("");
-                    stack.push(Integer.parseInt(numberEntered));
-                    refreshStackView();
-                }
+                pressEnter();
             }
         });
 
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*for(int i=0 ; i<stack.size() ; i++) {
-                    stack.pop();
-                }*/
                 stack.clear();
                 textViewInput.setText("");
                 refreshStackView();
             }
         });
+
+        //Assignation des listeners aux boutons d'opérations mathématique:
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressEnter();
+                if(stack.size()>=2) {
+                    float a = stack.pop();
+                    float b = stack.pop();
+                    stack.push(b+a);
+                    refreshStackView();
+                }
+            }
+        });
+
+        buttonMult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stack.size()>=2) {
+                    float a = stack.pop();
+                    float b = stack.pop();
+                    stack.push(b*a);
+                    refreshStackView();
+                }
+            }
+        });
+
+        buttonSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stack.size()>=2) {
+                    float a = stack.pop();
+                    float b = stack.pop();
+                    stack.push(b-a);
+                    refreshStackView();
+                }
+            }
+        });
+
+        buttonDiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stack.size()>=2) {
+                    float a = stack.pop();
+                    float b = stack.pop();
+                    stack.push(b/a);
+                    refreshStackView();
+                }
+            }
+        });
+    }
+
+    public void pressEnter() {
+        if(textViewInput.getText()!="") {
+            String numberEntered = "" + textViewInput.getText();
+            textViewInput.setText("");
+            stack.push(Float.parseFloat(numberEntered));
+            refreshStackView();
+        }
     }
 
     public void refreshStackView() {
