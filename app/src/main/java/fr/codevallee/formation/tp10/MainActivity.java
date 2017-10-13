@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
+        this.stack = new Stack<>();
 
         //Récupération des éléments de l'interface et des boutons:
         GridLayout gridLayoutNumbers = (GridLayout) findViewById(R.id.gl_buttons);
         textViewInput = (TextView) findViewById(R.id.tv_input);
-
 
         final Button buttonMult = (Button) findViewById(R.id.button_mult);
         final Button buttonAdd = (Button) findViewById(R.id.button_add);
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Récupération des vues pour la pile:
         this.stackView = new TextView[4];
-
         this.stackView[3] = (TextView) findViewById(R.id.tv_stack1);
         this.stackView[2] = (TextView) findViewById(R.id.tv_stack2);
         this.stackView[1] = (TextView) findViewById(R.id.tv_stack3);
@@ -56,11 +55,8 @@ public class MainActivity extends AppCompatActivity {
         this.buttons[9] = (Button) gridLayoutNumbers.getChildAt(9);
         this.buttons[9].setText("0");
 
-        //Initialisation de la pile:
-        this.stack = new Stack<>();
-
         //Assignation des listeners aux boutons des numéros:
-        for(int i=0 ; i<10 ; i++) {
+        for(int i=0 ; i<9 ; i++) {
             final Button actualButton = buttons[i];
             final int position = i;
             actualButton.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +66,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        //On s'occupe du cas épineux du 0:
+        this.buttons[9].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(textViewInput.getText()!="") {
+                    textViewInput.setText(textViewInput.getText() + "0");
+                }
+            }
+        });
 
         //Assignation des listeners aux boutons des fonctions:
         buttonEnter.setOnClickListener(new View.OnClickListener() {
@@ -91,8 +96,10 @@ public class MainActivity extends AppCompatActivity {
         buttonPop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stack.pop();
-                refreshStackView();
+                if(!stack.empty()) {
+                    stack.pop();
+                    refreshStackView();
+                }
             }
         });
 
@@ -152,7 +159,14 @@ public class MainActivity extends AppCompatActivity {
     public void refreshStackView() {
         for(int i=0 ; i<this.stackView.length ; i++) {
             if(i<stack.size()) {
-                this.stackView[i].setText("" + this.stack.get(i));
+
+                Log.d("Test decimal",this.stack.get(i)+" % 1 = "+this.stack.get(i)%1+" et en int = "+this.stack.get(i).intValue());
+
+                if(this.stack.get(i)%1 == 0) { //TODO remplacer ça par DecimalFormat !! (et du coup tout en double)
+                    this.stackView[i].setText("" + this.stack.get(i).intValue());
+                } else {
+                    this.stackView[i].setText("" + this.stack.get(i));
+                }
             } else {
                 this.stackView[i].setText("");
             }
@@ -161,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void mathOperation(OPP opp) {
         pressEnter();
-        float resultat=0;
         if(stack.size()>=2) {
+            float resultat;
             float a = stack.pop();
             float b = stack.pop();
             switch (opp) {
@@ -182,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
                     resultat = 0;
                     break;
             }
+            stack.push(resultat);
+            refreshStackView();
         }
-        stack.push(resultat);
-        refreshStackView();
     }
 }
