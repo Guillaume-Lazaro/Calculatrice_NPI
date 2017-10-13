@@ -51,25 +51,25 @@
             android:columnCount="3"
             android:rowCount="3">
 
-            <Button android:id="@+id/button1"/>
+            <Button/>
 
-            <Button android:id="@+id/button2"/>
+            <Button/>
 
-            <Button android:id="@+id/button3"/>
+            <Button/>
 
-            <Button android:id="@+id/button4"/>
+            <Button/>
 
-            <Button android:id="@+id/button5"/>
+            <Button/>
 
-            <Button android:id="@+id/button6"/>
+            <Button/>
 
-            <Button android:id="@+id/button7"/>
+            <Button/>
 
-            <Button android:id="@+id/button8"/>
+            <Button/>
 
-            <Button android:id="@+id/button9"/>
+            <Button/>
 
-            <Button android:id="@+id/button0"/>
+            <Button/>
         </GridLayout>
 
         <LinearLayout

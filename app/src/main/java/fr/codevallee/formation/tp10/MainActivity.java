@@ -13,6 +13,7 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
+    private enum OPP {ADD,SUB,MULT,DIV};
     private Button[] buttons;
     private TextView[] stackView;
     private Stack<Float> stack;
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Récupération des éléments de l'interface et des boutons:
         GridLayout gridLayoutNumbers = (GridLayout) findViewById(R.id.gl_buttons);
-        //final TextView textViewInput = (TextView) findViewById(R.id.tv_input);
         textViewInput = (TextView) findViewById(R.id.tv_input);
 
 
@@ -41,10 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Récupération des vues pour la pile:
         this.stackView = new TextView[4];
-        /*this.stackView[0] = (TextView) findViewById(R.id.tv_stack1);
-        this.stackView[1] = (TextView) findViewById(R.id.tv_stack2);
-        this.stackView[2] = (TextView) findViewById(R.id.tv_stack3);
-        this.stackView[3] = (TextView) findViewById(R.id.tv_stack4);*/
 
         this.stackView[3] = (TextView) findViewById(R.id.tv_stack1);
         this.stackView[2] = (TextView) findViewById(R.id.tv_stack2);
@@ -118,52 +114,28 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressEnter();
-                if(stack.size()>=2) {
-                    float a = stack.pop();
-                    float b = stack.pop();
-                    stack.push(b+a);
-                    refreshStackView();
-                }
+                mathOperation(OPP.ADD);
             }
         });
 
         buttonMult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressEnter();
-                if(stack.size()>=2) {
-                    float a = stack.pop();
-                    float b = stack.pop();
-                    stack.push(b*a);
-                    refreshStackView();
-                }
+                mathOperation(OPP.MULT);
             }
         });
 
         buttonSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressEnter();
-                if(stack.size()>=2) {
-                    float a = stack.pop();
-                    float b = stack.pop();
-                    stack.push(b-a);
-                    refreshStackView();
-                }
+                mathOperation(OPP.SUB);
             }
         });
 
         buttonDiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressEnter();
-                if(stack.size()>=2) {
-                    float a = stack.pop();
-                    float b = stack.pop();
-                    stack.push(b/a);
-                    refreshStackView();
-                }
+                mathOperation(OPP.DIV);
             }
         });
     }
@@ -185,5 +157,33 @@ public class MainActivity extends AppCompatActivity {
                 this.stackView[i].setText("");
             }
         }
+    }
+
+    public void mathOperation(OPP opp) {
+        pressEnter();
+        float resultat=0;
+        if(stack.size()>=2) {
+            float a = stack.pop();
+            float b = stack.pop();
+            switch (opp) {
+                case ADD:
+                    resultat = b + a;
+                    break;
+                case MULT:
+                    resultat = b * a;
+                    break;
+                case SUB:
+                    resultat = b - a;
+                    break;
+                case DIV:
+                    resultat = b / a;
+                    break;
+                default:
+                    resultat = 0;
+                    break;
+            }
+        }
+        stack.push(resultat);
+        refreshStackView();
     }
 }
