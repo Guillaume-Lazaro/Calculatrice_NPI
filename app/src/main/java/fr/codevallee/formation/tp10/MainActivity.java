@@ -92,6 +92,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonPop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stack.pop();
+                refreshStackView();
+            }
+        });
+
+        buttonSwap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressEnter();
+                if(stack.size()>=2) {
+                    float a = stack.pop();
+                    float b = stack.pop();
+                    stack.push(a);
+                    stack.push(b);
+                    refreshStackView();
+                }
+            }
+        });
+
         //Assignation des listeners aux boutons d'opérations mathématique:
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         buttonMult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pressEnter();
                 if(stack.size()>=2) {
                     float a = stack.pop();
                     float b = stack.pop();
@@ -121,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         buttonSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pressEnter();
                 if(stack.size()>=2) {
                     float a = stack.pop();
                     float b = stack.pop();
@@ -133,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pressEnter();
                 if(stack.size()>=2) {
                     float a = stack.pop();
                     float b = stack.pop();
