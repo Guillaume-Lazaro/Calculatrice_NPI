@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:gravity="right"
+    android:gravity="end"
     tools:context="fr.codevallee.formation.tp10.MainActivity">
 
     <LinearLayout
