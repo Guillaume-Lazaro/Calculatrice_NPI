@@ -159,9 +159,6 @@ public class MainActivity extends AppCompatActivity {
     public void refreshStackView() {
         for(int i=0 ; i<this.stackView.length ; i++) {
             if(i<stack.size()) {
-
-                Log.d("Test decimal",this.stack.get(i)+" % 1 = "+this.stack.get(i)%1+" et en int = "+this.stack.get(i).intValue());
-
                 if(this.stack.get(i)%1 == 0) { //TODO remplacer ça par DecimalFormat !! (et du coup tout en double)
                     this.stackView[i].setText("" + this.stack.get(i).intValue());
                 } else {
